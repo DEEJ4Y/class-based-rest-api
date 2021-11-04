@@ -1,0 +1,24 @@
+{
+  "name": "class-based-rest-api",
+  "version": "1.0.0",
+  "description": "A Express and Mongoose REST API skeleton project.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set NODE_ENV=Production&& node server.js",
+    "dev": "set NODE_ENV=Development&& nodemon server.js"
+  },
+  "author": "DEEJ4Y",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^9.0.0",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.0.2",
+    "express-rate-limit": "^5.2.6",
+    "helmet": "^4.6.0",
+    "hpp": "^0.2.3",
+    "mongoose": "^5.12.7",
+    "morgan": "^1.10.0",
+    "xss-clean": "^0.1.1"
+  }
+}
