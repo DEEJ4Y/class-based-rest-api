@@ -2,6 +2,10 @@
 
 A Express and Mongoose REST API skeleton project.
 
+[Check out](https://deej4y.github.io/class-based-rest-api/) the walkthrough [here](https://deej4y.github.io/class-based-rest-api/).
+
+Read the [wiki](https://github.com/DEEJ4Y/class-based-rest-api/wiki).
+
 ## Getting started
 
 This is meant to be a starter project template.
@@ -47,30 +51,18 @@ Create a file `models/Book.js`. In this file we will add our mongoose Schema for
 ```js
 const mongoose = require("mongoose");
 
-const BookSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Please add a name"],
-      unique: true,
-      trim: true,
-      maxlength: [50, "Name can not be more than 50 characters"],
-    },
-    description: {
-      type: String,
-      required: [true, "Please add a description"],
-      maxlength: [500, "Description can not be more than 500 characters"],
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+const BookSchema = new mongoose.Schema({
+  name: {
+    type: String,
   },
-  {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
-);
+  description: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 module.exports = mongoose.model("Book", BookSchema);
 ```
