@@ -8,20 +8,12 @@ class Router {
     this.endpoint = `/`;
     this.endpointWithId = `/:${modelName}Id`;
 
-    this.router.route(this.endpoint).post((req, res, next) => {
-      this.controller.createResource(req, res, next);
-    });
+    this.router.route(this.endpoint).post(this.controller.createResource);
     this.router
       .route(this.endpointWithId)
-      .get((req, res, next) => {
-        this.controller.getOneById(req, res, next);
-      })
-      .put((req, res, next) => {
-        this.controller.updateOneById(req, res, next);
-      })
-      .delete((req, res, next) => {
-        this.controller.deleteById(req, res, next);
-      });
+      .get(this.controller.getOneById)
+      .put(this.controller.updateOneById)
+      .delete(this.controller.deleteById);
   }
 
   create() {

@@ -137,17 +137,16 @@ Lets say we want to add a route to get all books.
 
 Create a file `services/book.js`. We will add a function to our service by inheritance.
 
+We can make use of the `asyncHandler` wrapper function to handle errors in our promises or async-await. Just wrap your asynchronous function inside `asyncHandler` to automatically catch the error in the promises.
+
 ```js
+const asyncHandler = require("../middleware/async");
 const Service = require("./index");
 
 class BookService extends Service {
-  async getAllBooks() {
-    try {
-      return await this.model.find();
-    } catch (err) {
-      return undefined;
-    }
-  }
+  getAllBooks = asyncHandler(async () => {
+    return await this.model.find();
+  });
 }
 
 module.exports = BookService;
@@ -163,30 +162,27 @@ const BookService = require("../services/book");
 
 const SuccessfulResponse = require("../middleware/succesfulResponse");
 const ErrorResponse = require("../utils/errorResponse");
+const asyncHandler = require("../middleware/async");
 
 class BookController extends Controller {
   constructor(model, modelName) {
     super(model, modelName, new BookService(model));
   }
 
-  async getAllBooks(req, res, next) {
-    try {
-      const books = await this.service.getAllBooks();
+  getAllBooks = asyncHandler(async (req, res, next) => {
+    const books = await this.service.getAllBooks();
 
-      if (!books) {
-        return next(new ErrorResponse(`No books were found.`, 404));
-      }
-
-      new SuccessfulResponse(
-        res,
-        200,
-        `The books were successfully found.`,
-        books
-      ).buildResponse();
-    } catch (err) {
-      console.error(err);
+    if (!books) {
+      return next(new ErrorResponse(`No books were found.`, 404));
     }
-  }
+
+    new SuccessfulResponse(
+      res,
+      200,
+      `The books were successfully found.`,
+      books
+    ).buildResponse();
+  });
 }
 
 module.exports = BookController;
@@ -202,9 +198,7 @@ class BookRouter extends Router {
   constructor(model, modelName) {
     super(model, modelName, new BookController(model, modelName));
 
-    this.router.route(this.endpoint).get((req, res, next) => {
-      this.controller.getAllBooks(req, res, next);
-    });
+    this.router.route(this.endpoint).get(this.controller.getAllBooks);
   }
 }
 

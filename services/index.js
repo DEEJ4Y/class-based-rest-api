@@ -1,42 +1,27 @@
+const asyncHandler = require("../middleware/async");
 class Service {
   constructor(model) {
     this.model = model;
   }
 
-  async createResource(reqBody) {
-    try {
-      return await this.model.create(reqBody);
-    } catch (err) {
-      return undefined;
-    }
-  }
+  createResource = asyncHandler(async (reqBody) => {
+    return await this.model.create(reqBody);
+  });
 
-  async getOneById(id) {
-    try {
-      return await this.model.findById(id);
-    } catch (err) {
-      return undefined;
-    }
-  }
+  getOneById = asyncHandler(async (id) => {
+    return await this.model.findById(id);
+  });
 
-  async updateOneById(id, reqBody) {
-    try {
-      return await this.model.findByIdAndUpdate(id, reqBody, {
-        new: true,
-        runValidators: true,
-      });
-    } catch (err) {
-      return undefined;
-    }
-  }
+  updateOneById = asyncHandler(async (id, reqBody) => {
+    return await this.model.findByIdAndUpdate(id, reqBody, {
+      new: true,
+      runValidators: true,
+    });
+  });
 
-  async deleteById(id) {
-    try {
-      return await this.model.findByIdAndDelete(id);
-    } catch (err) {
-      return undefined;
-    }
-  }
+  deleteById = asyncHandler(async (id) => {
+    return await this.model.findByIdAndDelete(id);
+  });
 }
 
 module.exports = Service;

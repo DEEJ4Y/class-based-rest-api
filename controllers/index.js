@@ -1,6 +1,7 @@
 const Service = require("../services/index.js");
 const SuccessfulResponse = require("../middleware/succesfulResponse");
 const ErrorResponse = require("../utils/errorResponse");
+const asyncHandler = require("../middleware/async.js");
 
 class Controller {
   constructor(model, modelName, service) {
@@ -8,95 +9,79 @@ class Controller {
     this.modelName = modelName;
   }
 
-  async createResource(req, res, next) {
-    try {
-      const resource = await this.service.createResource(req.body);
+  createResource = asyncHandler(async (req, res, next) => {
+    const resource = await this.service.createResource(req.body);
 
-      if (!resource) {
-        return next(
-          new ErrorResponse(
-            `The ${this.modelName} was not created due to an error with the request data.`,
-            404
-          )
-        );
-      }
-
-      new SuccessfulResponse(
-        res,
-        201,
-        `The ${this.modelName} was successfully created.`,
-        resource
-      ).buildResponse();
-    } catch (err) {
-      console.error(err);
+    if (!resource) {
+      return next(
+        new ErrorResponse(
+          `The ${this.modelName} was not created due to an error with the request data.`,
+          404
+        )
+      );
     }
-  }
 
-  async getOneById(req, res, next) {
-    try {
-      const id = req.params[`${this.modelName}Id`];
-      const resource = await this.service.getOneById(id);
+    new SuccessfulResponse(
+      res,
+      201,
+      `The ${this.modelName} was successfully created.`,
+      resource
+    ).buildResponse();
+  });
 
-      if (!resource) {
-        return next(
-          new ErrorResponse(
-            `A ${this.modelName} was not found with an id of ${id}`,
-            404
-          )
-        );
-      }
+  getOneById = asyncHandler(async (req, res, next) => {
+    const id = req.params[`${this.modelName}Id`];
+    const resource = await this.service.getOneById(id);
 
-      new SuccessfulResponse(
-        res,
-        200,
-        `The ${this.modelName} was successfully found.`,
-        resource
-      ).buildResponse();
-    } catch (err) {
-      console.error(err);
+    if (!resource) {
+      return next(
+        new ErrorResponse(
+          `A ${this.modelName} was not found with an id of ${id}`,
+          404
+        )
+      );
     }
-  }
 
-  async updateOneById(req, res, next) {
-    try {
-      const id = req.params[`${this.modelName}Id`];
-      const resource = await this.service.updateOneById(id, req.body);
+    new SuccessfulResponse(
+      res,
+      200,
+      `The ${this.modelName} was successfully found.`,
+      resource
+    ).buildResponse();
+  });
 
-      if (!resource) {
-        return next(
-          new ErrorResponse(
-            `A ${this.modelName} was not found with an id of ${id}`,
-            404
-          )
-        );
-      }
+  updateOneById = asyncHandler(async (req, res, next) => {
+    const id = req.params[`${this.modelName}Id`];
+    const resource = await this.service.updateOneById(id, req.body);
 
-      new SuccessfulResponse(
-        res,
-        200,
-        `The ${this.modelName} was successfully updated.`,
-        resource
-      ).buildResponse();
-    } catch (err) {
-      console.error(err);
+    if (!resource) {
+      return next(
+        new ErrorResponse(
+          `A ${this.modelName} was not found with an id of ${id}`,
+          404
+        )
+      );
     }
-  }
 
-  async deleteById(req, res, next) {
-    try {
-      const id = req.params[`${this.modelName}Id`];
-      await this.service.deleteById(id);
+    new SuccessfulResponse(
+      res,
+      200,
+      `The ${this.modelName} was successfully updated.`,
+      resource
+    ).buildResponse();
+  });
 
-      new SuccessfulResponse(
-        res,
-        200,
-        `The ${this.modelName} was successfully updated.`,
-        {}
-      ).buildResponse();
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  deleteById = asyncHandler(async (req, res, next) => {
+    const id = req.params[`${this.modelName}Id`];
+    await this.service.deleteById(id);
+
+    new SuccessfulResponse(
+      res,
+      200,
+      `The ${this.modelName} was successfully updated.`,
+      {}
+    ).buildResponse();
+  });
 }
 
 module.exports = Controller;
