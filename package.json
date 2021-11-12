@@ -1,7 +1,7 @@
 {
-  "name": "class-based-rest-api-example",
+  "name": "class-based-rest-api",
   "version": "1.0.0",
-  "description": "A example for using the class-based-rest-api skeleton.",
+  "description": "A Express and Mongoose REST API skeleton project.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
