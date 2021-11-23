@@ -12,10 +12,10 @@ const Api = require("../api");
 const ModelData = require("../models/modelData");
 
 // Models for Api maker
-const Book = require("../models/Book");
+// const Book = require("../models/Book");
 
 // Routers
-const BookRouter = require("../routes/book");
+// const BookRouter = require("../routes/book");
 
 module.exports = (app) => {
   // Body parser
@@ -34,19 +34,19 @@ module.exports = (app) => {
   });
 
   // Set model data
-  let bookModelData = new ModelData({
-    // Model: Mongoose model
-    apiModel: Book,
+  // let bookModelData = new ModelData({
+  //   // Model: Mongoose model
+  //   apiModel: Book,
 
-    // Model Name: Name that will be used for your route (singular).
-    modelName: "book",
+  //   // Model Name: Name that will be used for your route (singular).
+  //   modelName: "book",
 
-    // Router: Uses the default router if not provided.
-    router: new BookRouter(Book, "book"),
-  });
+  //   // Router: Uses the default router if not provided.
+  //   router: new BookRouter(Book, "book"),
+  // });
 
   // Add model data to API
-  v1Api.addModelData(bookModelData);
+  // v1Api.addModelData(bookModelData);
 
   // Mount routers
   v1Api.initRouters(app);
